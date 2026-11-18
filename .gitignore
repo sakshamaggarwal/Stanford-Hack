@@ -1,0 +1,19 @@
+# Private team docs - never commit
+private-docs/
+*.private.md
+
+# Env / secrets
+.env
+.env.*
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Node / Python
+node_modules/
+__pycache__/
+*.pyc
+dist/
+build/

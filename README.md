@@ -26,5 +26,5 @@ After each seminar, the broker has a list of names, phones and emails. Turning t
 app/        App source (Enter export / code)
 data/       Synthetic demo data
 prompts/    AI prompt templates (drafting, discovery, handoff)
-docs/       Public submission material (write-up, screenshots)
+docs/       Architecture and submission material
 ```

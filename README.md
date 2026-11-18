@@ -1,30 +1,24 @@
-# OwnHomeForYou — Journey to your home 🏡
+# OwnHomeForYou — Journey to your home · 安家之路 🏡
 
-**Bilingual (English / 中文) AI follow-up that turns real-estate seminar leads into booked consultations.**
+**Turns real-estate seminar attendees into booked consultations with bilingual (English / 中文) follow-up emails and a capacity-aware scheduler.**
 
-Built for the *30×30 Real Business AI Buildathon @ Stanford* (Team 27) for **GCFRI**, a California real estate & mortgage brokerage. Built on Converge.AI (Enter, Framia, Combos).
+Built for the *30×30 Real Business AI Buildathon @ Stanford* (Team 27) for **GCFRI**, a California real estate & mortgage brokerage. Built with Converge.AI **Enter**.
 
-## Problem
-After each seminar, the broker has a list of names, phones and emails. Turning them into consultations is manual: repeated outreach, working out whether someone needs real estate or lending help, booking appointments, and nurturing people who aren't ready yet. There's no clear view of who was contacted, who replied or who is stalled. Many prospects prefer Chinese or bilingual communication.
-
-## Solution
-1. **Lead intake**: import the seminar lead list (CSV).
-2. **Pipeline**: New → Contacted → Replied → Qualified → Booked → Consulted (plus Nurture / Opt-out), with next action and overdue flags.
-3. **Bilingual AI follow-up**: personalised EN / 中文 / bilingual drafts; **the broker approves before anything is sent**.
-4. **Needs discovery**: a bilingual chat that classifies buy / sell / loan / refinance / just learning, and hands off to the broker when advice is needed.
-5. **Booking**: consultation slots, confirmations, reminders and a short handoff brief for the broker.
-6. **Dashboard**: funnel conversion, today's actions, follow-up coverage.
-
-## Guardrails
-- Human-in-the-loop: no outbound message without broker approval.
-- The AI never gives mortgage, legal or tax advice; it escalates to the licensed broker.
-- Consent and opt-out are checked before every message.
-- The demo uses **synthetic leads only**, and message sending is simulated.
+## Features (v0.2)
+1. **Bilingual follow-up email**: thank you, a short GCFRI intro and a booking link. If the customer has already booked, a reminder with their slot is sent instead. English by default, with a 查看中文版 link at the top that opens a hosted Chinese version.
+2. **Scheduler**: Mon–Sat 9–5 PT, 30-minute slots, 5 seats per slot (one per consultant). Customers only see availability; consultants are auto-assigned by fewest bookings that day, avoiding back-to-back meetings.
+3. **Nested customer database**: customers → buying preferences, with an automatic buying capability score.
+4. **Admin dashboard**: expandable customer rows, inline notes, ✉️ Send follow-up, 🔥 Hot flag and filter, EN / 中文 toggle.
+5. **Consultant dashboard**: each consultant logs in to see their own calendar of bookings, with customer details and notes.
 
 ## Repo layout
 ```
-app/        App source (Enter export / code)
-data/       Synthetic demo data
-prompts/    AI prompt templates (drafting, discovery, handoff)
-docs/       Architecture and submission material
+app/reference/   Scheduler assignment + capability score reference logic with tests
+data/            Synthetic customers + buying preferences (CSV)
+docs/            Architecture and build spec
 ```
+Run the tests: `cd app/reference && python3 -c "import test_scheduler as t; [getattr(t,n)() for n in dir(t) if n.startswith('test_')]"`
+
+## Guardrails
+- Synthetic data only. During the demo, every email goes to a team test inbox.
+- Optional sensitive fields (marital status, age) are never used for scoring or prioritisation.

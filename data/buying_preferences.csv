@@ -1,0 +1,31 @@
+preferences_id,customer_id,preferred_areas,budget,house_size_sqft,bedrooms,bathrooms,marital_status,household_size,buyer_age,est_credit_score,annual_household_income,buying_capability_score
+P001,C001,Cupertino; Milpitas,1200000,3000,2,1,married,3,51,700-749,300000,5.0
+P002,C002,Pleasanton; Palo Alto,3000000,2500,2,2,other,4,48,650-699,150000,1.0
+P003,C003,Pleasanton; Sunnyvale,2500000,3000,4,4,single,4,45,650-699,220000,1.8
+P004,C004,Fremont; San Jose,2500000,2500,2,2,married,5,62,800+,300000,2.4
+P005,C005,San Jose; Santa Clara,2000000,1600,4,3,single,4,48,650-699,400000,4.0
+P006,C006,Santa Clara; Pleasanton,2000000,1200,2,1,married,1,45,750-799,650000,6.5
+P007,C007,Milpitas; Dublin,2000000,1200,5,5,married,2,56,650-699,300000,3.0
+P008,C008,San Jose; Dublin,1600000,2500,2,1,other,4,26,700-749,220000,2.8
+P009,C009,Palo Alto; Sunnyvale,1200000,2000,3,2,single,3,28,700-749,500000,8.3
+P010,C010,Mountain View; Pleasanton,1200000,1200,3,3,other,3,43,650-699,300000,5.0
+P011,C011,Sunnyvale; Palo Alto,2500000,2000,5,5,other,2,47,650-699,300000,2.4
+P012,C012,Milpitas; San Jose,2000000,1600,4,4,married,1,49,700-749,220000,2.2
+P013,C013,Pleasanton; Dublin,2000000,2500,2,2,single,3,60,700-749,220000,2.2
+P014,C014,Palo Alto; Sunnyvale,1600000,1600,3,3,married,2,59,700-749,300000,3.8
+P015,C015,Sunnyvale; Cupertino,1600000,3000,2,2,other,2,29,800+,400000,5.0
+P016,C016,Santa Clara; Dublin,3000000,3000,5,4,married,5,30,800+,300000,2.0
+P017,C017,Mountain View; Sunnyvale,2000000,3000,4,4,other,5,61,700-749,650000,6.5
+P018,C018,Fremont; Palo Alto,3000000,2500,4,3,married,3,27,700-749,300000,2.0
+P019,C019,Mountain View; Sunnyvale,900000,2000,2,2,single,2,41,750-799,500000,10.0
+P020,C020,Fremont; San Jose,2500000,2500,2,2,single,2,60,750-799,300000,2.4
+P021,C021,Dublin; Milpitas,1200000,2500,2,1,other,1,53,650-699,650000,10.0
+P022,C022,Fremont; Pleasanton,900000,1600,2,2,other,3,57,650-699,650000,10.0
+P023,C023,Santa Clara; Mountain View,3000000,2000,3,2,other,2,47,750-799,400000,2.7
+P024,C024,Palo Alto; Pleasanton,3000000,2000,5,4,married,2,30,650-699,400000,2.7
+P025,C025,Milpitas; Mountain View,3000000,3000,3,2,married,2,43,750-799,220000,1.5
+P026,C026,Palo Alto; San Jose,2000000,3000,3,3,single,2,42,800+,150000,1.5
+P027,C027,Mountain View; Dublin,2000000,2500,2,1,other,4,46,750-799,650000,6.5
+P028,C028,San Jose; Palo Alto,2500000,1600,5,4,single,2,60,800+,650000,5.2
+P029,C029,Fremont; Dublin,2500000,2500,3,3,single,4,61,800+,220000,1.8
+P030,C030,Fremont; Sunnyvale,2500000,2500,5,4,single,3,55,800+,150000,1.2

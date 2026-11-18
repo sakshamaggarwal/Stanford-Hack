@@ -1,0 +1,31 @@
+customer_id,name,email,phone,need_type,timeline,meeting_scheduled,last_appointment,potential_loan_customer,hot,notes,preferences_id
+C001,Wei Chen,wei.chen@example.com,(408) 555-1037,Refinance,6-12 mo,no,,yes,no,,P001
+C002,Li Na Wang,li.na.wang@example.com,(408) 555-1074,Sell home,12+ mo,no,,yes,no,,P002
+C003,Jason Liu,jason.liu@example.com,(408) 555-1111,Refinance,6-12 mo,no,,yes,yes,,P003
+C004,Emily Zhang,emily.zhang@example.com,(408) 555-1148,Just learning,3-6 mo,yes,2026-11-19 11:30,no,no,,P004
+C005,Hao Li,hao.li@example.com,(408) 555-1185,Buy home,6-12 mo,no,,yes,no,,P005
+C006,Mei Lin,mei.lin@example.com,(408) 555-1222,Just learning,3-6 mo,no,,no,no,,P006
+C007,David Huang,david.huang@example.com,(408) 555-1259,Just learning,<3 mo,no,,no,no,,P007
+C008,Grace Wu,grace.wu@example.com,(408) 555-1296,Buy home,6-12 mo,yes,2026-11-21 10:00,yes,yes,,P008
+C009,Kevin Zhou,kevin.zhou@example.com,(408) 555-1333,Purchase loan,<3 mo,no,,yes,no,,P009
+C010,Xiaoyu Sun,xiaoyu.sun@example.com,(408) 555-1370,Buy home,<3 mo,no,,yes,no,,P010
+C011,Michael Brown,michael.brown@example.com,(408) 555-1407,Refinance,3-6 mo,no,,yes,no,,P011
+C012,Yan Zhao,yan.zhao@example.com,(408) 555-1444,Sell home,<3 mo,yes,2026-11-19 15:30,no,yes,,P012
+C013,Sophia Lee,sophia.lee@example.com,(408) 555-1481,Sell home,<3 mo,no,,yes,no,,P013
+C014,Tony Xu,tony.xu@example.com,(408) 555-1518,Buy home,12+ mo,no,,yes,no,,P014
+C015,Jing Yang,jing.yang@example.com,(408) 555-1555,Purchase loan,12+ mo,no,,yes,no,,P015
+C016,Ryan Patel,ryan.patel@example.com,(408) 555-1592,Just learning,3-6 mo,yes,2026-11-19 15:30,no,no,,P016
+C017,Fang Guo,fang.guo@example.com,(408) 555-1629,Purchase loan,6-12 mo,no,,yes,no,,P017
+C018,Cindy Ma,cindy.ma@example.com,(408) 555-1666,Sell home,<3 mo,no,,yes,no,,P018
+C019,Brian Tan,brian.tan@example.com,(408) 555-1703,Buy home,12+ mo,no,,yes,no,,P019
+C020,Ling He,ling.he@example.com,(408) 555-1740,Just learning,6-12 mo,yes,2026-11-21 15:30,yes,yes,,P020
+C021,Andrew Kim,andrew.kim@example.com,(408) 555-1777,Sell home,<3 mo,no,,no,no,,P021
+C022,Qian Luo,qian.luo@example.com,(408) 555-1814,Just learning,6-12 mo,no,,no,no,,P022
+C023,Helen Song,helen.song@example.com,(408) 555-1851,Purchase loan,<3 mo,no,,yes,no,,P023
+C024,Peter Gao,peter.gao@example.com,(408) 555-1888,Sell home,<3 mo,yes,2026-11-20 15:30,no,no,,P024
+C025,Yuki Feng,yuki.feng@example.com,(408) 555-1925,Sell home,12+ mo,no,,yes,no,,P025
+C026,Min Deng,min.deng@example.com,(408) 555-1962,Buy home,<3 mo,no,,yes,no,,P026
+C027,Sarah Johnson,sarah.johnson@example.com,(408) 555-1999,Buy home,6-12 mo,no,,yes,yes,,P027
+C028,Bo Xie,bo.xie@example.com,(408) 555-2036,Just learning,<3 mo,yes,2026-11-19 10:00,yes,no,,P028
+C029,Alice Hu,alice.hu@example.com,(408) 555-2073,Just learning,6-12 mo,no,,no,no,,P029
+C030,Daniel Ye,daniel.ye@example.com,(408) 555-2110,Refinance,3-6 mo,no,,yes,no,,P030

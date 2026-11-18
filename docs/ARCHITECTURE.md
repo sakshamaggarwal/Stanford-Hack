@@ -1,35 +1,22 @@
-# OwnHomeForYou: architecture
+# OwnHomeForYou: architecture (v0.2)
 
 ```mermaid
 flowchart LR
-  subgraph Sources[Lead sources]
-    A1[Seminar CSV]
-    A2[Eventbrite / Facebook / WeChat export]
-    A3[Seminar sign-up page]
+  S[Seminar attendee list] --> DB
+  subgraph Enter[OwnHomeForYou, built with Enter]
+    DB[(Built-in DB<br/>Customers 1:1 Buying preferences<br/>Bookings · Consultants · Email log)]
+    AD[Admin dashboard<br/>EN/中文 · Send follow-up · 🔥 Hot · notes]
+    EM[Email service<br/>booking email / reminder<br/>+ hosted 中文 version]
+    SC[Public scheduler<br/>5 seats per slot]
+    AS[Assignment engine<br/>least-booked, avoid back-to-back]
+    CD[Consultant dashboard<br/>own calendar + .ics invite]
   end
-  subgraph App[OwnHomeForYou, built with Enter]
-    B1[Lead intake & dedupe]
-    B2[(Database: leads, interactions,<br/>appointments, seminars)]
-    B3[AI engine: drafting, discovery chat,<br/>next best action, handoff brief]
-    B4[Broker approval queue]
-    B5[Booking & reminders]
-    B6[Broker dashboard]
-  end
-  P[Prospect: bilingual chat + booking page]
-  Broker((Broker))
-  A1 & A2 & A3 --> B1 --> B2
-  B2 <--> B3
-  B3 --> B4 -->|approved, simulated send| P
-  P -->|replies| B3
-  P --> B5 --> B2
-  B5 -->|handoff brief| Broker
-  B6 --> Broker
+  AD --> EM -->|demo: team test inbox| Cust((Customer))
+  Cust --> SC --> AS --> DB
+  AS --> CD
+  DB <--> AD
 ```
 
-| Part | Built with |
-|---|---|
-| Web app, database, AI | Enter (Converge.AI) |
-| Seminar promo / nurture visuals | Framia (Converge.AI), planned |
-| Public sign-up page | Combos / Enter, planned |
+**Slot logic:** a slot is available while `bookings < 5`. To assign a booking, take the free consultants, sort them by bookings that day (ties go C1→C5), and skip any consultant whose booking would be back-to-back when a free alternative exists.
 
-**Design principles:** human approval before any outbound message; consent and opt-out gate; AI never gives financial, legal or tax advice; synthetic data only; channel layer simulated so real SMS / email / WeChat can be plugged in later.
+**Capability score:** `min(10, round(20 × income ÷ budget, 1))`. For example, $500k income with a $1M budget scores 10.0, and with a $2M budget scores 5.0.

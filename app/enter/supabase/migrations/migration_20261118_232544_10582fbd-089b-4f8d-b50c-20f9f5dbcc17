@@ -1,0 +1,34 @@
+-- Guardrail: no outbound message may be sent/logged for opted-out or no-consent leads.
+create or replace function public.enforce_lead_contactable()
+returns trigger language plpgsql set search_path = public as $$
+declare ok boolean;
+begin
+  if (tg_table_name = 'message_drafts' and new.status in ('pending','sent'))
+     or (tg_table_name = 'lead_interactions' and new.kind = 'message_out') then
+    select (l.consent and l.stage <> 'opted_out') into ok from public.leads l where l.id = new.lead_id;
+    if not coalesce(ok, false) then
+      raise exception 'LEAD_BLOCKED: lead has opted out or has no consent' using errcode = 'P0001';
+    end if;
+  end if;
+  return new;
+end $$;
+
+create trigger message_drafts_contactable before insert or update of status on public.message_drafts
+  for each row execute function public.enforce_lead_contactable();
+create trigger lead_interactions_contactable before insert on public.lead_interactions
+  for each row execute function public.enforce_lead_contactable();
+
+-- When a lead opts out: revoke consent, clear next action, reject pending drafts.
+create or replace function public.handle_lead_opt_out()
+returns trigger language plpgsql set search_path = public as $$
+begin
+  if new.stage = 'opted_out' and old.stage is distinct from 'opted_out' then
+    new.consent := false;
+    new.next_action_due := null;
+    update public.message_drafts set status = 'rejected' where lead_id = new.id and status = 'pending';
+  end if;
+  return new;
+end $$;
+
+create trigger leads_opt_out before update of stage on public.leads
+  for each row execute function public.handle_lead_opt_out();

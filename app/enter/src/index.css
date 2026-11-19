@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* OwnHomeForYou — deep navy, warm gold, terracotta on clean white */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 14%;
+
+    --surface: 36 40% 98%;
+    --surface-foreground: 222 47% 14%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 14%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 14%;
+
+    --primary: 222 52% 22%;
+    --primary-foreground: 40 60% 98%;
+    --primary-soft: 222 45% 95%;
+
+    --gold: 38 72% 52%;
+    --gold-foreground: 222 52% 16%;
+    --gold-soft: 40 80% 94%;
+
+    --terracotta: 14 62% 52%;
+    --terracotta-foreground: 0 0% 100%;
+    --terracotta-soft: 14 70% 95%;
+
+    --success: 152 52% 36%;
+    --success-foreground: 0 0% 100%;
+    --success-soft: 150 50% 94%;
+
+    --warning: 32 90% 46%;
+    --warning-soft: 38 95% 93%;
+
+    --info: 205 70% 42%;
+    --info-soft: 205 80% 95%;
+
+    --secondary: 36 30% 95%;
+    --secondary-foreground: 222 47% 18%;
+
+    --muted: 36 25% 95.5%;
+    --muted-foreground: 220 12% 44%;
+
+    --accent: 40 60% 95%;
+    --accent-foreground: 222 52% 18%;
+
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 100%;
+    --destructive-soft: 0 80% 96%;
+
+    --border: 35 20% 89%;
+    --input: 35 18% 86%;
+    --ring: 38 72% 52%;
+
+    --radius: 0.875rem;
+
+    --gradient-hero: linear-gradient(135deg, hsl(222 52% 20%) 0%, hsl(222 45% 30%) 60%, hsl(24 45% 38%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(38 80% 58%), hsl(20 65% 54%));
+    --shadow-card: 0 1px 2px hsl(222 40% 20% / 0.04), 0 4px 16px -6px hsl(222 40% 20% / 0.08);
+    --shadow-elevated: 0 12px 32px -12px hsl(222 52% 22% / 0.28);
+
+    --sidebar-background: 222 52% 16%;
+    --sidebar-foreground: 40 30% 90%;
+    --sidebar-primary: 38 72% 52%;
+    --sidebar-primary-foreground: 222 52% 14%;
+    --sidebar-accent: 222 40% 24%;
+    --sidebar-accent-foreground: 40 60% 98%;
+    --sidebar-border: 222 35% 24%;
+    --sidebar-ring: 38 72% 52%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-surface text-foreground font-sans antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply tracking-tight;
+  }
+}
+
+@layer components {
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}

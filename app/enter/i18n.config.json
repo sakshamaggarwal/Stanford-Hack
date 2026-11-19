@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "fallbackLng": "en",
+  "languages": [
+    { "code": "en", "label": "EN", "detect": ["en"], "dir": "ltr" },
+    { "code": "zh-CN", "label": "中文", "detect": ["zh", "zh-CN", "zh-Hans"], "dir": "ltr" }
+  ]
+}

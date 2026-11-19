@@ -1,0 +1,2 @@
+update public.app_settings set test_inbox = 'mani.saksham12@gmail.com, sakshamtech12@gmail.com', updated_at = now() where id = 1;
+alter table public.app_settings alter column test_inbox set default 'mani.saksham12@gmail.com, sakshamtech12@gmail.com';

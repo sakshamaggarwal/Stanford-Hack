@@ -1,0 +1,60 @@
+insert into public.consultants (code, name, sort_order) values
+  ('C1','Grace Liu',1),('C2','Daniel Wong',2),('C3','Emily Chen',3),('C4','Kevin Park',4),('C5','Sophia Lin',5);
+
+create temp table seed_c (
+  name text, email text, phone text, need text, tl text, loan bool, hot bool, notes text,
+  ccode text, dayoff int, slot time,
+  areas text, budget numeric, sqft int, beds int, baths numeric, marital text, hh int, age int, credit int, income numeric
+) on commit drop;
+
+insert into seed_c values
+('Wei Chen','wei.chen@example.com','(408) 555-0101','buy','3to6',true,true,'Attended Cupertino seminar with spouse. Wants good school district.','C1',3,'10:00','Cupertino, Sunnyvale',1800000,1800,3,2,'married',4,38,780,320000),
+('Sarah Johnson','sarah.johnson@example.com','(650) 555-0102','buy','lt3',true,true,'Pre-approved elsewhere, comparing rates.','C2',3,'14:00','Palo Alto',2500000,2200,4,3,'married',4,42,800,650000),
+('Li Na','li.na@example.com','(510) 555-0103','purchase_loan','3to6',true,false,'Prefers Mandarin. First-time buyer.','C3',5,'11:00','Fremont',1300000,1600,3,2,'married',3,35,740,240000),
+('David Kim','david.kim@example.com','(408) 555-0104','refinance','lt3',true,false,'Current rate 7.1%, wants to refinance.','C2',3,'10:00','San Jose',1100000,1500,3,2,'married',3,45,760,210000),
+('Mei Lin Huang','meilin.huang@example.com','(408) 555-0105','buy','6to12',true,true,'Tech worker, RSU income.','C4',5,'13:30','Milpitas, Santa Clara',1400000,1700,3,2.5,'single',1,31,720,400000),
+('James Wu','james.wu@example.com','(650) 555-0106','sell','lt3',false,false,'Downsizing after retirement.','C5',0,'15:00','Mountain View',2000000,1900,3,2,'married',2,58,790,300000),
+('Xiaoming Wang','xiaoming.wang@example.com','(408) 555-0107','buy','3to6',true,false,'',null,null,null,'Santa Clara',1200000,1400,3,2,'married',3,33,700,180000),
+('Emily Zhao','emily.zhao@example.com','(650) 555-0108','buy','6to12',true,false,'Asked about down payment assistance.',null,null,null,'San Mateo',1600000,1500,3,2,'single',1,29,750,210000),
+('Robert Garcia','robert.garcia@example.com','(650) 555-0109','sell','3to6',false,false,'',null,null,null,'Daly City',1000000,1300,3,1.5,'married',5,61,770,150000),
+('Jennifer Liu','jennifer.liu@example.com','(925) 555-0110','purchase_loan','lt3',true,true,'Found a house, needs loan quickly.',null,null,null,'Pleasanton, Dublin',1500000,2100,4,3,'married',4,40,790,520000),
+('Hao Zhang','hao.zhang@example.com','(408) 555-0111','learning','12plus',false,false,'',null,null,null,'Sunnyvale',900000,1100,2,2,'single',1,27,690,140000),
+('Ashley Brown','ashley.brown@example.com','(650) 555-0112','buy','6to12',true,false,'',null,null,null,'Mountain View',1700000,1600,3,2,'married',3,36,735,260000),
+('Yu Ting Chen','yuting.chen@example.com','(408) 555-0113','refinance','3to6',true,false,'Wants cash-out for remodel.',null,null,null,'Cupertino',2200000,2400,4,3,'married',5,47,810,480000),
+('Michael Lee','michael.lee@example.com','(650) 555-0114','buy','lt3',true,true,'Strong buyer, all-cash possible.',null,null,null,'Palo Alto, Los Altos',3000000,2600,4,3.5,'married',4,44,820,1500000),
+('Fang Zhou','fang.zhou@example.com','(510) 555-0115','learning','12plus',false,false,'',null,null,null,'Fremont',1000000,1400,3,2,'other',2,52,710,110000),
+('Kevin Nguyen','kevin.nguyen@example.com','(408) 555-0116','buy','3to6',true,false,'',null,null,null,'San Jose',1050000,1450,3,2,'married',4,34,705,170000),
+('Lan Huang','lan.huang@example.com','(408) 555-0117','sell','6to12',false,false,'Selling rental property.',null,null,null,'Milpitas',1250000,1550,3,2,'married',2,63,780,190000),
+('Daniel Smith','daniel.smith@example.com','(408) 555-0118','purchase_loan','6to12',true,false,'',null,null,null,'Santa Clara',1350000,1500,3,2,'single',1,32,745,230000),
+('Qing Yang','qing.yang@example.com','(925) 555-0119','buy','12plus',true,false,'',null,null,null,'Dublin',1150000,1800,4,2.5,'married',4,37,725,200000),
+('Rachel Park','rachel.park@example.com','(408) 555-0120','refinance','lt3',true,false,'',null,null,null,'Sunnyvale',1450000,1500,3,2,'married',3,41,765,300000),
+('Jun Li','jun.li@example.com','(650) 555-0121','buy','3to6',true,false,'',null,null,null,'San Mateo, Foster City',1900000,1700,3,2,'married',3,39,775,310000),
+('Olivia Martinez','olivia.martinez@example.com','(650) 555-0122','learning','12plus',false,false,'',null,null,null,'Daly City',950000,1200,2,1,'single',1,26,680,120000),
+('Bo Wen Xu','bowen.xu@example.com','(408) 555-0123','buy','6to12',true,false,'Relocating from Shanghai.',null,null,null,'Cupertino',2100000,2000,4,3,'married',4,43,795,500000),
+('Chris Taylor','chris.taylor@example.com','(650) 555-0124','sell','lt3',false,true,'Listing within 60 days.',null,null,null,'Palo Alto',3200000,2300,4,3,'married',2,66,805,1700000),
+('Hui Min Zhao','huimin.zhao@example.com','(510) 555-0125','purchase_loan','3to6',true,false,'',null,null,null,'Fremont, Union City',1150000,1600,3,2.5,'married',4,36,730,190000),
+('Brian Chen','brian.chen@example.com','(408) 555-0126','buy','12plus',true,false,'',null,null,null,'San Jose',1000000,1300,3,2,'single',1,30,715,250000),
+('Xin Yi Wu','xinyi.wu@example.com','(650) 555-0127','learning','12plus',false,false,'',null,null,null,'Mountain View',1500000,1400,2,2,'single',1,28,700,170000),
+('Matthew Davis','matthew.davis@example.com','(925) 555-0128','refinance','6to12',true,false,'',null,null,null,'Pleasanton',1600000,2200,4,2.5,'married',5,49,785,350000),
+('Jia Hui Lin','jiahui.lin@example.com','(408) 555-0129','buy','3to6',true,false,'',null,null,null,'Santa Clara, Sunnyvale',1300000,1500,3,2,'married',3,34,750,280000),
+('Thomas Anderson','thomas.anderson@example.com','(650) 555-0130','sell','6to12',false,false,'',null,null,null,'San Mateo',1800000,1900,3,2.5,'married',2,59,790,260000);
+
+with wk as (select date_trunc('week', now() at time zone 'America/Los_Angeles')::date as mon)
+insert into public.customers (name, email, phone, need_type, timeline, potential_loan_customer, hot, notes, consultant_id, meeting_scheduled, last_appointment)
+select s.name, s.email, s.phone, s.need, s.tl, s.loan, s.hot, s.notes, c.id, s.ccode is not null,
+  case when s.ccode is not null then ((wk.mon + s.dayoff) + s.slot) at time zone 'America/Los_Angeles' end
+from seed_c s cross join wk left join public.consultants c on c.code = s.ccode;
+
+insert into public.buying_preferences (customer_id, preferred_areas, budget, house_size_sqft, bedrooms, bathrooms, marital_status, household_size, buyer_age, credit_score, annual_income)
+select cu.id, s.areas, s.budget, s.sqft, s.beds, s.baths, s.marital, s.hh, s.age, s.credit, s.income
+from seed_c s join public.customers cu on cu.email = s.email;
+
+insert into public.bookings (customer_id, consultant_id, slot_start)
+select id, consultant_id, last_appointment from public.customers where meeting_scheduled;
+
+-- Demo holds: all 5 seats filled for Tue 5-6 PM, Wed 9-11 AM, Fri 4-5 PM (current week, Pacific)
+with wk as (select date_trunc('week', now() at time zone 'America/Los_Angeles')::date as mon),
+slots(dayoff, t) as (values (1,'17:00'::time),(1,'17:30'),(2,'09:00'),(2,'09:30'),(2,'10:00'),(2,'10:30'),(4,'16:00'),(4,'16:30'))
+insert into public.bookings (customer_id, consultant_id, slot_start, label)
+select null, c.id, ((wk.mon + s.dayoff) + s.t) at time zone 'America/Los_Angeles', 'Demo hold'
+from slots s cross join wk cross join public.consultants c;

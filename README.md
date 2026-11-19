@@ -11,8 +11,12 @@ Built for the *30×30 Real Business AI Buildathon @ Stanford* (Team 27) for **GC
 4. **Admin dashboard**: expandable customer rows, inline notes, ✉️ Send follow-up, 🔥 Hot flag and filter, EN / 中文 toggle.
 5. **Consultant dashboard**: each consultant logs in to see their own calendar of bookings, with customer details and notes.
 
+**Live app:** https://5d14ca86121c43be8e4121f656edae2a.prod.enter.pro (demo accounts are listed on the login page)
+**One-page summary:** [docs/OwnHomeForYou_One_Page_Summary.pdf](docs/OwnHomeForYou_One_Page_Summary.pdf)
+
 ## Repo layout
 ```
+app/enter/       Full Enter app source (React + Supabase migrations + `crm` edge function)
 app/reference/   Scheduler assignment + capability score reference logic with tests
 data/            Synthetic customers + buying preferences (CSV)
 docs/            Architecture and build spec

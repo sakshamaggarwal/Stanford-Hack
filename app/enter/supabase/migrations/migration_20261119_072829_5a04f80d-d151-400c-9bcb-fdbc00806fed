@@ -1,0 +1,2 @@
+delete from public.bookings where label = 'e2e seed';
+delete from public.customers where email like 'e2e-%@example.com' and notes = 'temporary verification record';

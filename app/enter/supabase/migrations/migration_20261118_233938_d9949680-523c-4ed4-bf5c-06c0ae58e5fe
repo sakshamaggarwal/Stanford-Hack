@@ -1,0 +1,156 @@
+-- OwnHomeForYou lean CRM: consultants, customers, preferences, bookings, email log, settings
+create table public.consultants (
+  id uuid primary key default gen_random_uuid(),
+  code text not null unique,
+  name text not null,
+  sort_order int not null unique,
+  user_id uuid unique,
+  created_at timestamptz not null default now()
+);
+
+create table public.staff_admins (
+  user_id uuid primary key,
+  display_name text not null default 'Admin',
+  created_at timestamptz not null default now()
+);
+
+create table public.customers (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  phone text,
+  need_type text not null default 'learning' check (need_type in ('buy','sell','purchase_loan','refinance','learning')),
+  timeline text not null default '12plus' check (timeline in ('lt3','3to6','6to12','12plus')),
+  meeting_scheduled boolean not null default false,
+  last_appointment timestamptz,
+  potential_loan_customer boolean not null default false,
+  hot boolean not null default false,
+  notes text not null default '',
+  consultant_id uuid references public.consultants(id) on delete set null,
+  booking_token uuid not null unique default gen_random_uuid(),
+  created_at timestamptz not null default now()
+);
+
+create table public.buying_preferences (
+  customer_id uuid primary key references public.customers(id) on delete cascade,
+  preferred_areas text not null default '',
+  budget numeric(12,0),
+  house_size_sqft int,
+  bedrooms int,
+  bathrooms numeric(3,1),
+  marital_status text check (marital_status in ('single','married','other')),
+  household_size int,
+  buyer_age int,
+  credit_score int,
+  annual_income numeric(12,0),
+  capability_score numeric(3,1) generated always as (
+    case when budget is null or budget <= 0 or annual_income is null then null
+         else least(10, round(20 * annual_income / budget, 1)) end
+  ) stored
+);
+
+create table public.bookings (
+  id uuid primary key default gen_random_uuid(),
+  customer_id uuid references public.customers(id) on delete cascade,
+  consultant_id uuid not null references public.consultants(id) on delete cascade,
+  slot_start timestamptz not null,
+  status text not null default 'booked' check (status in ('booked','cancelled')),
+  label text,
+  created_at timestamptz not null default now()
+);
+create unique index bookings_one_per_consultant_slot on public.bookings (consultant_id, slot_start) where status = 'booked';
+create index bookings_slot_idx on public.bookings (slot_start) where status = 'booked';
+
+create table public.email_log (
+  id uuid primary key default gen_random_uuid(),
+  customer_id uuid references public.customers(id) on delete cascade,
+  email_type text not null check (email_type in ('booking_invite','reminder','consultant_invite')),
+  sent_to text not null,
+  subject text not null,
+  status text not null default 'sent' check (status in ('sent','failed')),
+  error text,
+  sent_at timestamptz not null default now()
+);
+create index email_log_customer_idx on public.email_log (customer_id, sent_at desc);
+
+create table public.app_settings (
+  id int primary key default 1 check (id = 1),
+  test_inbox text not null default 'mani.saksham12@gmail.com',
+  updated_at timestamptz not null default now()
+);
+insert into public.app_settings (id) values (1);
+
+-- Role helpers (security definer avoids recursive RLS)
+create or replace function public.crm_is_admin() returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (select 1 from public.staff_admins where user_id = auth.uid())
+$$;
+
+create or replace function public.crm_consultant_id() returns uuid
+language sql stable security definer set search_path = public as $$
+  select id from public.consultants where user_id = auth.uid()
+$$;
+
+-- Consultants may only change notes / need type / timeline on customers
+create or replace function public.crm_guard_customer_update() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if auth.uid() is null or public.crm_is_admin() then
+    return new;
+  end if;
+  if (new.name, new.email, new.phone, new.meeting_scheduled, new.last_appointment,
+      new.potential_loan_customer, new.hot, new.consultant_id, new.booking_token)
+     is distinct from
+     (old.name, old.email, old.phone, old.meeting_scheduled, old.last_appointment,
+      old.potential_loan_customer, old.hot, old.consultant_id, old.booking_token) then
+    raise exception 'Consultants can only edit notes, need type and timeline';
+  end if;
+  return new;
+end $$;
+create trigger customers_guard_update before update on public.customers
+  for each row execute function public.crm_guard_customer_update();
+
+-- RLS
+alter table public.consultants enable row level security;
+alter table public.staff_admins enable row level security;
+alter table public.customers enable row level security;
+alter table public.buying_preferences enable row level security;
+alter table public.bookings enable row level security;
+alter table public.email_log enable row level security;
+alter table public.app_settings enable row level security;
+
+create policy "staff read consultants" on public.consultants for select to authenticated
+  using (public.crm_is_admin() or public.crm_consultant_id() is not null);
+
+create policy "admins read own admin row" on public.staff_admins for select to authenticated
+  using (user_id = auth.uid());
+
+create policy "admin all customers" on public.customers for all to authenticated
+  using (public.crm_is_admin()) with check (public.crm_is_admin());
+create policy "consultant read own customers" on public.customers for select to authenticated
+  using (consultant_id = public.crm_consultant_id());
+create policy "consultant update own customers" on public.customers for update to authenticated
+  using (consultant_id = public.crm_consultant_id()) with check (consultant_id = public.crm_consultant_id());
+
+create policy "admin all preferences" on public.buying_preferences for all to authenticated
+  using (public.crm_is_admin()) with check (public.crm_is_admin());
+create policy "consultant read own preferences" on public.buying_preferences for select to authenticated
+  using (exists (select 1 from public.customers c where c.id = customer_id and c.consultant_id = public.crm_consultant_id()));
+create policy "consultant update own preferences" on public.buying_preferences for update to authenticated
+  using (exists (select 1 from public.customers c where c.id = customer_id and c.consultant_id = public.crm_consultant_id()))
+  with check (exists (select 1 from public.customers c where c.id = customer_id and c.consultant_id = public.crm_consultant_id()));
+
+create policy "admin read bookings" on public.bookings for select to authenticated
+  using (public.crm_is_admin());
+create policy "consultant read own bookings" on public.bookings for select to authenticated
+  using (consultant_id = public.crm_consultant_id());
+
+create policy "admin read email log" on public.email_log for select to authenticated
+  using (public.crm_is_admin());
+create policy "consultant read own customer email log" on public.email_log for select to authenticated
+  using (exists (select 1 from public.customers c where c.id = customer_id and c.consultant_id = public.crm_consultant_id()));
+
+create policy "admin read settings" on public.app_settings for select to authenticated
+  using (public.crm_is_admin());
+create policy "admin update settings" on public.app_settings for update to authenticated
+  using (public.crm_is_admin()) with check (public.crm_is_admin());

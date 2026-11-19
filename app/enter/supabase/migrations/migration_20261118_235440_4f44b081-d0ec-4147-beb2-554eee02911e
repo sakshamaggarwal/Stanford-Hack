@@ -1,0 +1,1 @@
+delete from public.customers where email like 'e2e-%@example.com' and notes = 'temporary verification record';

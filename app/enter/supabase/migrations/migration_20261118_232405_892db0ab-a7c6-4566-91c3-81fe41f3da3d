@@ -1,0 +1,126 @@
+create table public.seminars (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null default auth.uid(),
+  name text not null,
+  held_on date,
+  location text not null default '',
+  is_demo boolean not null default false,
+  created_at timestamptz not null default now()
+);
+alter table public.seminars enable row level security;
+create policy "seminars owner access" on public.seminars for all to authenticated
+  using (owner_id = auth.uid()) with check (owner_id = auth.uid());
+
+create table public.leads (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null default auth.uid(),
+  name text not null,
+  phone text not null default '',
+  email text not null default '',
+  city text not null default '',
+  seminar_id uuid references public.seminars(id) on delete set null,
+  language_pref text not null default 'en' check (language_pref in ('en','zh','bilingual')),
+  interest text not null default 'just_learning' check (interest in ('buy_first_home','sell','purchase_loan','refinance','just_learning')),
+  notes text not null default '',
+  stage text not null default 'new' check (stage in ('new','contacted','replied','qualified','booked','consulted','nurture','opted_out')),
+  furthest_stage text not null default 'new' check (furthest_stage in ('new','contacted','replied','qualified','booked','consulted')),
+  consent boolean not null default true,
+  timeline text,
+  budget text,
+  area text,
+  first_time_buyer boolean,
+  pre_approved boolean,
+  next_action text,
+  next_action_due timestamptz,
+  last_touch_at timestamptz,
+  first_touch_at timestamptz,
+  chat_token text not null unique default replace(gen_random_uuid()::text, '-', ''),
+  handoff_brief jsonb,
+  is_demo boolean not null default false,
+  created_at timestamptz not null default now()
+);
+create index leads_owner_idx on public.leads(owner_id);
+alter table public.leads enable row level security;
+create policy "leads owner access" on public.leads for all to authenticated
+  using (owner_id = auth.uid()) with check (owner_id = auth.uid());
+
+create table public.lead_interactions (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null default auth.uid(),
+  lead_id uuid not null references public.leads(id) on delete cascade,
+  kind text not null check (kind in ('message_out','message_in','note','stage_change','booking','opt_out','draft_rejected')),
+  channel text,
+  content text not null default '',
+  ai_generated boolean not null default false,
+  edited boolean not null default false,
+  created_at timestamptz not null default now()
+);
+create index lead_interactions_lead_idx on public.lead_interactions(lead_id);
+alter table public.lead_interactions enable row level security;
+create policy "interactions owner access" on public.lead_interactions for all to authenticated
+  using (owner_id = auth.uid())
+  with check (owner_id = auth.uid() and exists (select 1 from public.leads l where l.id = lead_id and l.owner_id = auth.uid()));
+
+create table public.message_drafts (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null default auth.uid(),
+  lead_id uuid not null references public.leads(id) on delete cascade,
+  channel text not null check (channel in ('sms','email','wechat')),
+  language text not null check (language in ('en','zh','bilingual')),
+  purpose text not null check (purpose in ('follow_up','confirmation','reminder','nurture')),
+  subject text,
+  content text not null,
+  status text not null default 'pending' check (status in ('pending','sent','rejected')),
+  ai_generated boolean not null default true,
+  edited boolean not null default false,
+  scheduled_for timestamptz,
+  created_at timestamptz not null default now()
+);
+create index message_drafts_owner_status_idx on public.message_drafts(owner_id, status);
+alter table public.message_drafts enable row level security;
+create policy "drafts owner access" on public.message_drafts for all to authenticated
+  using (owner_id = auth.uid())
+  with check (owner_id = auth.uid() and exists (select 1 from public.leads l where l.id = lead_id and l.owner_id = auth.uid()));
+
+create table public.appointments (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null default auth.uid(),
+  lead_id uuid not null references public.leads(id) on delete cascade,
+  starts_at timestamptz not null,
+  duration_min integer not null default 30,
+  mode text not null default 'video' check (mode in ('in_person','video','phone')),
+  status text not null default 'scheduled' check (status in ('scheduled','completed','cancelled')),
+  created_at timestamptz not null default now()
+);
+create unique index appointments_owner_slot_uniq on public.appointments(owner_id, starts_at) where status = 'scheduled';
+alter table public.appointments enable row level security;
+create policy "appointments owner access" on public.appointments for all to authenticated
+  using (owner_id = auth.uid())
+  with check (owner_id = auth.uid() and exists (select 1 from public.leads l where l.id = lead_id and l.owner_id = auth.uid()));
+
+create table public.chat_messages (
+  id uuid primary key default gen_random_uuid(),
+  owner_id uuid not null,
+  lead_id uuid not null references public.leads(id) on delete cascade,
+  role text not null check (role in ('user','assistant')),
+  content text not null,
+  created_at timestamptz not null default now()
+);
+create index chat_messages_lead_idx on public.chat_messages(lead_id, created_at);
+alter table public.chat_messages enable row level security;
+create policy "chat owner read" on public.chat_messages for select to authenticated
+  using (owner_id = auth.uid());
+
+create table public.broker_settings (
+  owner_id uuid primary key default auth.uid(),
+  broker_name text not null default 'Jerry Zhang',
+  company text not null default 'GCFRI',
+  timezone text not null default 'America/Los_Angeles',
+  availability jsonb not null default '{"1":["10:00","10:30","11:00","11:30","14:00","14:30","15:00","15:30","16:00"],"2":["10:00","10:30","11:00","11:30","14:00","14:30","15:00","15:30","16:00"],"3":["10:00","10:30","11:00","11:30","14:00","14:30","15:00","15:30","16:00"],"4":["10:00","10:30","11:00","11:30","14:00","14:30","15:00","15:30","16:00"],"5":["10:00","10:30","11:00","11:30","14:00","14:30"],"6":["10:00","10:30","11:00","11:30"]}'::jsonb,
+  modes text[] not null default array['in_person','video','phone'],
+  office_address text not null default 'GCFRI office, San Jose, CA',
+  updated_at timestamptz not null default now()
+);
+alter table public.broker_settings enable row level security;
+create policy "settings owner access" on public.broker_settings for all to authenticated
+  using (owner_id = auth.uid()) with check (owner_id = auth.uid());

@@ -1,0 +1,4 @@
+insert into public.staff_admins (user_id, display_name) values ('31430a6d-6de4-4c63-9b02-88c56323d22c','Jerry Zhang');
+update public.consultants set user_id = v.uid::uuid from (values
+ ('C1','e3393d04-e1a1-4ba2-b284-a63f3b516c98'),('C2','8581225f-5ded-417e-b5b9-563e98a074f7'),('C3','ed968d89-f637-41e6-b3b0-e8960de41ab0'),('C4','f0e5d152-1cf6-4544-8a24-9b7ae8a55489'),('C5','5fdb0316-91f4-4b40-b21d-6d5105043483')
+) as v(code, uid) where consultants.code = v.code;
